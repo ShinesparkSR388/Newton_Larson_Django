@@ -1,0 +1,15 @@
+.max-heigth{
+    height: 100%;
+}
+.max-width{
+    width: 100%;
+}
+.flex-around{
+    align-content: space-around;
+}
+.flex-wrap{
+    flex-wrap: wrap;
+}
+.flex-stretch{
+    align-content: stretch;
+}
