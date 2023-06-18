@@ -9,7 +9,9 @@ MESSAGE_LEVEL = const_.DEBUG
 # Create your views here.
 def larson(request):
     if(len(session.objects.get_queryset()) == 1):
-        return render(request, 'newton.html')
+        return render(request, 'newton.html',{
+            'form_problem': form_problem(),
+        })
     return redirect('/Login')
         
 

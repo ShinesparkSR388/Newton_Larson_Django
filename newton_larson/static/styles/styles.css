@@ -1,3 +1,4 @@
+
 .bg-color-1 {
   background-color: #2C74B3;
 }
@@ -1199,7 +1200,6 @@ input[type=checkbox]:checked::before {
 }
 
 button {
-  min-width: 100px;
   height: 35px;
   color: #ffffff;
   padding: 5px 10px;
@@ -1223,7 +1223,6 @@ button:active {
 }
 
 .button {
-  min-width: 100px;
   height: 35px;
   color: #ffffff;
   padding: 5px 10px;

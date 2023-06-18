@@ -62,8 +62,14 @@
     color: $color-4;
 }
 //Text font
+@font-face {
+    font-family: 'Geometos';
+    src: url('../../../Geometos.ttf') format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
 body{
-    font-family: 'Century Gothic', 'Consolas', Calibri;
+    font-family: 'Century Gothic', 'Consolas', Calibri, 'Geometos';
     color: $color_text;
     background-color: $color_background;
 }
