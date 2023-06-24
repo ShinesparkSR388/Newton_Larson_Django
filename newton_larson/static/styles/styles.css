@@ -1524,3 +1524,6 @@ p, h1, h2, h3, h4, div, form, select, input, label, span, a {
 }
 
 /*# sourceMappingURL=styles.css.map */
+.prelines{
+  white-space:normal;
+}

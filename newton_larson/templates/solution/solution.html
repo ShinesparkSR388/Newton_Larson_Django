@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static './styles/styles.css' %}">
+    <!--<link rel="stylesheet" href="../../static/styles/styles.css">-->
+    <title>Solución</title>
+</head>
+<body>
+    <nav class="toolbar">
+        <div class="row padding-1">
+            <div class="col-2">
+                <img class="img-icon-4" src="{% static 'logo_icon.png' %}" alt="">
+            </div>
+            <div class="col-8 flex-container flex-justify-right">
+                <a href="/Larson">Resolver</a>
+                {% if not session %}
+                <a href="/Login">Cerrar Session</a>
+                {% else %}
+                <a href="/Login">Iniciar Session</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col-1"></div>
+            <div class="col-8 ">
+                <div class="row border-bottom padding-2 padding-bottom-3">
+                    <div class="col-1"></div>
+                    <div class="col-8 flex-container flex-justify-center flex-column">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-6 margin-1">
+                                <img class="img-full-w" src="{% static './logo_title.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="row border-top text-4 padding-top-2">
+                            <div class="col-5 border-rigth flex-container flex-align-center flex-column">
+                                <h3 class="margin-0 margin-top-1">Funcion ingresada:</h3>
+                                <h3 class="margin-0 margin-top-1 text-style-italic text-w-3 margin-left-2">{{problem}}</h3>
+                                <h3 class="margin-0 margin-top-1">Valor inicial ingresado:</h3>
+                                <h3 class="margin-0 margin-top-1 text-style-italic text-w-3 margin-left-2">{{x}}</h3>
+                                <h3 class="margin-0 margin-top-1">Porcentaje de error requerido:</h3>
+                                <h3 class="margin-0 margin-top-1 text-style-italic text-w-3 margin-left-2">{{error}}</h3>
+                            </div>
+                            <div class="col-5 flex-container flex-align-center flex-column">
+                                <h3 class="margin-0 margin-top-1">Numero de iteracion</h3>
+                                <h3 class="margin-0 margin-top-1 text-style-italic text-w-3 margin-left-2">{{iteration}}</h3>
+                                <h3 class="margin-0 margin-top-1">Valor final (raiz obtenida):</h3>
+                                <h3 class="margin-0 margin-top-1 text-style-italic text-w-3 margin-left-2">{{raiz}}</h3>
+                                <h3 class="margin-0 margin-top-1">Porcentaje de error final:</h3>
+                                <h3 class="margin-0 margin-top-1 text-style-italic text-w-3 margin-left-2">{{final_error}}%</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!--IMAGENES DE GRAFICAS-->
+                <div class="row border-bottom padding-bottom-3">
+                    <div class="col flex-container flex-align-center flex-column">
+                        <div class="row">
+                            <div class="col">
+                                <h1 class="text-style-italic text-w-5">Gráficas del problema</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 flex-container flex-align-center flex-column border-rigth">
+                                <h3 class="text-style-italic text-5">Funcion inicial ingresada cuando tiende a la raiz</h3>
+                                <div class="padding-5 padding-top-1 padding-bottom-1">
+                                    <img class="img-full-w" src="data:image/png;base64,{{img_function}}" alt="">
+                                </div>
+                            </div>
+                            <div class="col-5 flex-container flex-align-center flex-column">
+                                <h3 class="text-style-italic text-5">Recorrido del margen de error por iteración</h3>
+                                <div class="padding-5 padding-top-1 padding-bottom-1">
+                                    <img class="img-full-w" src="data:image/png;base64,{{img_error}}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--TABLA DE ITERACIONES-->
+                <div class="row magin-2 margin-bottom-5">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <h1 class="text-style-italic text-w-5">Tabla de iteraciones</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="row margin-left-3">
+                                    <div class="col-1 border margin-0 padding-1 bg-color-4 flex-container flex-align-center"><h4 class="margin-0">Iteración</h4></div>
+                                    <div class="col-2 border margin-0 padding-1 bg-color-4 flex-container flex-align-center"><h4 class="margin-0">X anterior</h4></div>
+                                    <div class="col-2 border margin-0 padding-1 bg-color-4 flex-container flex-align-center"><h4 class="margin-0">X nuevo</h4></div>
+                                    <div class="col-3 border margin-0 padding-1 bg-color-4 flex-container flex-align-center"><h4 class="margin-0">% Error</h4></div>
+                                </div>
+                                <!--Aqui se rellena la tabla de iteraciones-->
+                                {% for n, x, x_, p in data_table %}
+                                <div class="row margin-left-3">
+                                    <div class="col-1 border margin-0 padding-1 bg-color-3 flex-container flex-justify-center"><h4 class="margin-0 text-w-5 text-style-oblique">{{n}}</h4></div>
+                                    <div class="col-2 border margin-0 padding-1 bg-color-3 flex-container flex-justify-center"><h4 class="margin-0 text-w-5 text-style-oblique">{{x}}</h4></div>
+                                    <div class="col-2 border margin-0 padding-1 bg-color-3 flex-container flex-justify-center"><h4 class="margin-0 text-w-5 text-style-oblique">{{x_}}</h4></div>
+                                    <div class="col-3 border margin-0 padding-1 bg-color-3 flex-container flex-justify-center"><h4 class="margin-0 text-w-5 text-style-oblique">{{p}} %</h4></div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-2 border rounded-2 bg-color-4 flex-container flex-justify-center flex-align-center flex-column" style="height: 150px;" container_>
+                            <h3 class="padding-bottom-1 margin-0 padding-top-1 border-bottom">Provar denuevo?</h3>
+                            <h1 class="margin-0 padding-0" arrow>🠰</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <script src="{% static './js/solved.js' %}"></script>
+</body>
+</html>

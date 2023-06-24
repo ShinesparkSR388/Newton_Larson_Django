@@ -16,7 +16,12 @@
                 <img class="img-icon-4" src="{% static 'logo_icon.png' %}" alt="">
             </div>
             <div class="col-8 flex-container flex-justify-right">
-                <a href="/Login">Cerrar sesion</a>
+                <a href="/Larson">Resolver</a>
+                {% if not session_ %}
+                <a href="/Login">Iniciar Session</a>
+                {% else %}
+                <a href="/Login">Cerrar Session</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -29,10 +34,27 @@
             </div>
             <div class="row margin-top-2 flex-container flex-justify-center">
                 <div class="col-4">
+                    {% if messages %}
+                    <div class="padding-1 bg-color-3 padding-bottom-2 padding-top-2 padding-left-2 rounded-2">
+                        <ul>
+                        {% for message in messages %}
+                            <li class="ligth">{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                        {% if message %}
+                            <h3>¿Quieres ver la solucion completa?</h3>
+                            {% if session_ %}
+                            <a href="/Solution/{{problem}}/{{x}}/{{error}}">Ir a la solució</a> 
+                            {% else %}
+                            <a href="/Login">Iniciar Sesion</a>   
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    {% endif %}
                     <h2>Ingrese un problema a resolver</h2>
                     <form class="margin-0 margin-top-1 margin-bottom-1 padding-1 bg-color-dark border" form-problem>
                         {{form_problem}}
-                        <input type="submit" value="Ingresar" btn_sub>
+                        <input class="text-3 text-style-italic text-w-8" type="submit" value="RESOLVER" btn_sub>
                     </form>
                 </div>
             </div>

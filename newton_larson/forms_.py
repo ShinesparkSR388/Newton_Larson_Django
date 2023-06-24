@@ -10,3 +10,4 @@ class form_login(forms.Form):
 class form_problem(forms.Form):
     problem = forms.CharField(label='', max_length=120)
     x = forms.CharField(label='', max_length= 120)
+    error = forms.CharField(label='', max_length=5)

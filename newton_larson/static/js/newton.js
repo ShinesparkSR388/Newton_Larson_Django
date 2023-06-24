@@ -4,8 +4,10 @@ function keyb_(){
         const container = document.querySelector('[form-problem]');
         const in_problem = document.getElementById('id_problem');
         const in_x = document.getElementById('id_x');
+        const in_error = document.getElementById('id_error');
         const label_problem = document.createElement('h3');
         const label_x = document.createElement('h3');
+        const label_error = document.createElement('h3');
         const btn_sub = document.querySelector('[btn_sub]')
         //TECLADO
         const button_per_file = 6
@@ -51,7 +53,7 @@ function keyb_(){
     //valores de elementos
         label_problem.textContent = 'Ecuacion en funcion de "x"';
         label_x.textContent = 'Valor inicial de "x"';
-        //TECLADO
+        label_error.textContent = 'Error minimo deseado en porcentaje'
 
     //agregar elementos
         container.appendChild(label_problem);
@@ -61,6 +63,8 @@ function keyb_(){
         //Fin TECLADO
         container.appendChild(label_x);
         container.appendChild(in_x);
+        container.appendChild(label_error);
+        container.appendChild(in_error);
         container.appendChild(btn_sub);
 }
 

@@ -7,4 +7,5 @@ urlpatterns = [
     path('NewtonLarson', vs.index),
     path('SignUp', vs.signup),
     path('Larson', vs.larson),
+    path('Solution/<str:problem>/<str:x>/<str:error>', vs.problem_solved),
 ]
