@@ -8,11 +8,10 @@ from .newton_solver import newton_rapson as nwt
 MESSAGE_LEVEL = const_.DEBUG
 
 # Create your views here.
-#All solved problem views
+# All solved problem views
 def problem_solved(request, problem, x, error):
     
     problem = problem.replace('%', '/')
-    print(problem)
     if(len(session_.objects.get_queryset()) == 0):
         return redirect('/Login')
     #estructura de la pagina de la solucion empieza aqui
@@ -135,6 +134,9 @@ def signup(request):
     if(request.method == 'GET' and len(request.GET) != 0 ):
         users = user_.objects.get_queryset().filter(username=(request.GET)['username'])
         emails = user_.objects.get_queryset().filter(email=(request.GET)['email'])
+        if(len(request.GET['password']) < 8):
+            message_.success(request, 'La contraseña debe contener 8 caracteres o numeros como mínimo⛔')
+            return redirect('/SignUp')
         if(len(users) == 0):
             if (len(emails) == 0):
                 user_.objects.create(username=(request.GET)['username'], email=(request.GET)['email'], password=(request.GET)['password'])
