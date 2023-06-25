@@ -43,28 +43,60 @@ class newton_rapson:
                 counter = 0
                 error_ = 100.0
                 bad_initial = 0
+                x_zero_negative = False
+                x_zero_positive = False
+                x_r_n = False
+                x_r_p = False
                 while(exit_):
                     #if(self.derivated_function.evalf(subs = {self.x : self.x_0})):
                        # self.have_sol = False
                        # return self.have_sol
                     counter += 1
                     valor_x = self.x_n
+                    denom_ = (self.derivated_function.evalf(subs = {self.x : self.x_n})) 
+                    if(x_zero_positive == False and denom_ == 0):
+                        x_zero_positive = True
+                        self.x_n += 0.0000001
+                    if(x_zero_positive == True and x_zero_negative == False and denom_ == 0):
+                        x_zero_negative = True
+                        self.x_n -= 0.0000001
+                    if(denom_ == 0 and x_zero_negative == True and x_zero_positive == True):
+                        actual_iterate = np.array([counter, valor_x, 0, 0])
+                        self.iteration_list.append(actual_iterate)
+                        return True
                     self.x_n = round(valor_x - (self.iterable_ecuation.evalf(subs = {self.x : valor_x})), 10)
-                    temp__ = error_
-                    error_ = (100 * (self.x_n - valor_x) / self.x_n)
-                    if(error_ == nan):
-                        return False
-                    if(error_ <= 0):
-                        error_ *= -1
-                    actual_iterate = np.array([counter, valor_x, self.x_n, error_])
+                    #zero?
+                    if(x_r_n == True and x_r_p == True):
+                        actual_iterate = np.array([counter, valor_x, 0, 0])
+                        self.iteration_list.append(actual_iterate)
+                        return True
+                    if(self.x_n == 0 and valor_x > 0):
+                        self.x_n -= 0.0000001
+                        x_r_p = True
+                    if(self.x_n == 0 and valor_x < 0):
+                        self.x_n += 0.0000001
+                        x_r_n = True
+                    try:
+                        temp__ = error_
+                        error_ = (100 * (self.x_n - valor_x) / self.x_n)
+                        if(error_ == nan):
+                            return False
+                        
+                        if(error_ <= 0):
+                            error_ *= -1
+                        actual_iterate = np.array([counter, valor_x, self.x_n, error_])
+                    except:
+                        print('')
+                    
                     self.iteration_list.append(actual_iterate)
                     if error_ <= self.error_:
                         exit_ = False
                     if(error_ > temp__ ):
                         bad_initial += 1
-                    if(bad_initial == 30):
+                    if(bad_initial == 100):
                         dt = 'S'
                         if(dt == "N" or dt == "n"):
+                            print('lejano')
                             self.have_sol = False
                             exit_ = False
                     if(counter > 100000):
@@ -145,16 +177,11 @@ class newton_rapson:
         datas_ = np.array(self.iteration_list)
         solution_branch = datas_[len(datas_)-1][1]
         solution_branch = int(solution_branch)
-        val_0 = int(self.x_0)
-        if(val_0 < solution_branch):
-            val_0 = val_0 - 2
-            solution_branch = solution_branch + 5
-        else:
-            val_0 = val_0 + 2
-            solution_branch = solution_branch - 5
-        x_value_list = range(val_0, solution_branch)
+        
+        x_value_list = range(solution_branch-7, solution_branch+7)
         for x_val in x_value_list:
-            function_y.append(self.function_.evalf(subs = {self.x : x_val}))
+            cx = self.function_.evalf(subs = {self.x : x_val})
+            function_y.append(cx)
         x_zeros = [0] * len(x_value_list)
         y_zeros = [0] * len(function_y)
         x_value_list = np.array(x_value_list)
@@ -165,7 +192,12 @@ class newton_rapson:
         ax.plot(y_zeros, function_y, color='tab:blue')
         solution_branch = datas_[len(datas_)-1][1]
         ax.plot(solution_branch, 0,marker="o", color="red")
-        plt.text(solution_branch - 0.5, 1, 'Raiz', color = "green")
+        branch_tag = 0
+        if(function_y[0] < function_y[len(function_y)-1]):
+            branch_tag = (function_y[len(function_y)-1] - function_y[1]) * 0.08
+        else:
+            branch_tag = (function_y[1] - function_y[len(function_y)-1]) * 0.1
+        plt.text(solution_branch - 0.5, branch_tag, 'Raiz', color = "green")
         ax.set_title('Grafica de la función', loc = "left", fontdict = {'fontsize':14, 'fontweight':'bold', 'color':'tab:blue'})
         #se genera el archivo
         buf_ = io.BytesIO()

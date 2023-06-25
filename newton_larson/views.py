@@ -1,18 +1,18 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms_ import *
-from .models import user as user_, SESSION as session_, problem
+from .models import user as user_, SESSION as session_, problem as problem_tb
 from django.contrib.messages import constants as const_
 from django.contrib import messages as message_
 from .newton_solver import newton_rapson as nwt
-import numpy as np
-from io import BytesIO
-import base64
 MESSAGE_LEVEL = const_.DEBUG
 
 # Create your views here.
 #All solved problem views
 def problem_solved(request, problem, x, error):
+    
+    problem = problem.replace('%', '/')
+    print(problem)
     if(len(session_.objects.get_queryset()) == 0):
         return redirect('/Login')
     #estructura de la pagina de la solucion empieza aqui
@@ -30,7 +30,7 @@ def problem_solved(request, problem, x, error):
     img_error = problem_.generate_graphic_error()
     img_function = problem_.generate_graphic_function()
     #termina aqui
-    f_raiz = answer[len(answer)-1][1]
+    f_raiz = answer[len(answer)-1][2]
     if(f_raiz != 0):
         f_raiz = '{:f}'.format(answer[len(answer)-1][1])
     if(err_ != 0):
@@ -84,12 +84,13 @@ def larson(request):
                 message_.warning(request, 'Parece que el problema no tiene solucion⛔')
                 return redirect('/Larson')
             
-            message_.warning(request, 'El valor de la raiz aproximada obtenida de la funcion ingresada es: ' + str(answer[len(answer)-1][1]))
+            message_.warning(request, 'El valor de la raiz aproximada obtenida de la funcion ingresada es: ' + str(answer[len(answer)-1][2]))
             message_.warning(request, 'con numero de iteracion: ' + str(len(answer)))
             message_.warning(request, 'Y el porcentaje final de error es: ' + percent + '%')
             
             message__ = True
             problem_.__del__()
+            val_problem = val_problem.replace('/', '%')
             return render(request, 'newton.html',{
                 'form_problem': form_problem(),
                 'session_': session__,
